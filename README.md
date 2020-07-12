@@ -3,12 +3,13 @@
 ### usage
 
 ```text
-i3list --instance|-i TARGET
-i3list --class|-c    TARGET
-i3list --conid|-n    TARGET
-i3list --winid|-d    TARGET
-i3list --mark|-m     TARGET
-i3list --title|-t    TARGET
+i3list [--json FILE]
+i3list --instance|-i TARGET [--json FILE]
+i3list --class|-c    TARGET [--json FILE]
+i3list --conid|-n    TARGET [--json FILE]
+i3list --winid|-d    TARGET [--json FILE]
+i3list --mark|-m     TARGET [--json FILE]
+i3list --title|-t    TARGET [--json FILE]
 i3list --help|-h
 i3list --version|-v
 ```
@@ -25,6 +26,8 @@ By using eval,  the output can be used as an array in bash scripts,  but the arr
 
 OPTIONS
 -------
+
+`--json` FILE  
 
 `--instance`|`-i` TARGET  
 Search for windows with a instance matching *TARGET*

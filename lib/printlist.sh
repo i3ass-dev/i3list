@@ -2,14 +2,13 @@
 
 printlist(){
 
-  local crit="${1:-X}"
-  local srch="${2:-X}"
-  local toprint="${3:-all}"
-
-  i3-msg -t get_tree | awk -f <(awklib) \
-                           -F':' \
-                           -v RS=',' \
-                           -v crit="${crit}" \
-                           -v srch="${srch}" \
-                           -v toprint="${toprint}" 
+  awk -f <(awklib) \
+    FS=: RS=, crit="$1" srch="$2" toprint="$3" \
+    <(
+      if [[ -f ${__o[json]} ]]; then
+        cat "${__o[json]}"
+      else
+        i3-msg -t get_tree
+      fi
+    )
 }
