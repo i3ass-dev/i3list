@@ -3,8 +3,8 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3list - version: 0.064
-updated: 2020-07-12 by budRich
+i3list - version: 0.179
+updated: 2020-07-13 by budRich
 EOB
 }
 
@@ -79,7 +79,7 @@ options="$(
   getopt --name "[ERROR]:i3list" \
     --options "i:c:n:d:m:t:hv" \
     --longoptions "json:,instance:,class:,conid:,winid:,mark:,title:,help,version," \
-    -- "$@" || exit 77
+    -- "$@" || exit 98
 )"
 
 eval set -- "$options"

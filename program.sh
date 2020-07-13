@@ -3,8 +3,8 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3list - version: 0.064
-updated: 2020-07-12 by budRich
+i3list - version: 0.179
+updated: 2020-07-13 by budRich
 EOB
 }
 
@@ -101,7 +101,7 @@ cat << 'EOB'
 BEGIN {
   # sq contains a single quote for convenience
   sq = "'"
-  
+
   # act|trg == 0: active/target window not found yet
   # act|trg == 1: active/target window in process
   # act|trg == 2: active/target window processed
@@ -371,17 +371,19 @@ END {
     }
   }
 }
-hit!=0 && $0~"{" {hit++}
-hit!=0 && $0~"}" {hit--}
+hit && /[{]/ {hit++}
+hit && /[}]/ {hit--}
 
-$1 == "\"rect\"" && dimget != "workspace" {dimget="window"}
-$1 == "\"deco_rect\"" {dimget="tab"}
+$1 ~ /"rect"/ && dimget != "workspace" {dimget="window"}
+$1 ~ /"deco_rect"/ {dimget="tab"}
 
-match($0,/([{]|"nodes":[}][[]|.*_rect":{)?"([a-z_]+)":[["]*([^]}"]*)[]}"]*$/,ma) {
-  key=ma[2]
-  var=ma[3]
+$(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|focused|instance|class|title)"$/ {
+  
+  key=gensub(/.*"([^"]+)"$/,"\\1","g",$(NF-1))
+  var=gensub(/[["]*([^]}"]+)[]}"]*$/,"\\1","g",$NF)
 
-  if (trg == 0 && key == crit && var ~ srch) {
+  
+  if (key == crit && !trg && var ~ srch) {
     if (key=="id") {curcid=var}
     window["T"]["TWC"]=curcid
     trg=1
@@ -389,16 +391,13 @@ match($0,/([{]|"nodes":[}][[]|.*_rect":{)?"([a-z_]+)":[["]*([^]}"]*)[]}"]*$/,ma)
 
   switch (key) {
     case "focus":
-      if (hit!=0) {
+      if (hit) {
         container["C"curcon"F"]=var
       } else {
         # define active workspace by id
         # (only useful when workspace is empty)
-        for (w in aws) {
-          if (var == w) {
-            setworkspace(w,"A")
-          }
-        }
+        for (w in aws) 
+          if (var == w) { setworkspace(w,"A") }
       }
     break
 
@@ -418,7 +417,7 @@ match($0,/([{]|"nodes":[}][[]|.*_rect":{)?"([a-z_]+)":[["]*([^]}"]*)[]}"]*$/,ma)
 
     case /^(width|height|x|y)$/ :
 
-      if (dimget != 0) {
+      if (dimget) {
         dim[curcid][dimget][key]=var
       }
 
@@ -428,7 +427,7 @@ match($0,/([{]|"nodes":[}][[]|.*_rect":{)?"([a-z_]+)":[["]*([^]}"]*)[]}"]*$/,ma)
 
     case "id":
       curcid=var
-      if (hit!=0) {conta[curcon]["id"]=curcid}
+      if (hit) {conta[curcon]["id"]=curcid}
     break
 
     case "floating":
@@ -538,9 +537,12 @@ function setworkspace(cid,type) {
 EOB
 }
 
-ERM(){ >&2 echo "$*"; }
-ERR(){ >&2 echo "[WARNING]" "$*"; }
-ERX(){ >&2 echo "[ERROR]" "$*" && exit 1 ; }
+set -E
+trap '[ "$?" -ne 98 ] || exit 98' ERR
+
+ERX() { echo  "[ERROR] $*" >&2 ; exit 98 ;}
+ERR() { echo  "[WARNING] $*" >&2 ;}
+ERM() { echo  "$*" >&2 ;}
 
 printlist(){
 
@@ -561,7 +563,7 @@ options="$(
   getopt --name "[ERROR]:i3list" \
     --options "i:c:n:d:m:t:hv" \
     --longoptions "json:,instance:,class:,conid:,winid:,mark:,title:,help,version," \
-    -- "$@" || exit 77
+    -- "$@" || exit 98
 )"
 
 eval set -- "$options"

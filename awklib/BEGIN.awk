@@ -1,7 +1,7 @@
 BEGIN {
   # sq contains a single quote for convenience
   sq = "'"
-  
+
   # act|trg == 0: active/target window not found yet
   # act|trg == 1: active/target window in process
   # act|trg == 2: active/target window processed

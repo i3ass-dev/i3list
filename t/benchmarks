@@ -1,3 +1,21 @@
+removed match in favour for classic pattern
+===========================================
+time(while ((++i<50));do i3list -i typiskt --json t/tree.json  >/dev/null ; done)
+real  0m1.711s -400
+
+time(while ((++i<100));do i3list -i typiskt --json t/tree.json  >/dev/null ; done)
+real  0m3.410s
+
+
+Hardcoded name for all relevant keys
+====================================
+time(while ((++i<100));do i3list -i typiskt --json t/tree.json  >/dev/null ; done)
+real  0m4.469s
+
+time(while ((++i<50));do i3list -i typiskt --json t/tree.json  >/dev/null ; done)
+real  0m2.157s -800
+
+
 FD instead of pipe to start awk
 ===============================
 
