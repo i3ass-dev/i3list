@@ -356,10 +356,9 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
         acon[curcon]=curcid
       }
 
-      else if (var ~ /^i34X.*/ && fourspace != 1) {
+      else if (var ~ /^i34X.*/ && aws[curwsid]["num"] != -1 && fourspace != 1) {
         # if mainsplit container exist, get i3fyra
         # workspace on next occurrence of "num".
-
         setworkspace(curwsid,"F")
         fourspace=1
       }

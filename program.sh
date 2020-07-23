@@ -3,8 +3,8 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3list - version: 0.179
-updated: 2020-07-13 by budRich
+i3list - version: 0.184
+updated: 2020-07-23 by budRich
 EOB
 }
 
@@ -14,20 +14,20 @@ main(){
 
   local crit srch
 
-  if [[ -z ${__o[*]:-} ]]; then
+  if [[ -z ${__o[*]} ]]; then
     crit=X srch=X
-  elif [[ -n ${__o[instance]:-} ]]; then
-    crit="instance" srch="${__o[instance]}"
-  elif [[ -n ${__o[class]:-} ]]; then
-    crit="class" srch="${__o[class]}"
-  elif [[ -n ${__o[conid]:-} ]]; then
-    crit="id" srch="${__o[conid]}"
-  elif [[ -n ${__o[winid]:-} ]]; then
-    crit="window" srch="${__o[winid]}"
-  elif [[ -n ${__o[mark]:-} ]]; then
-    crit="marks" srch="${__o[mark]}"
-  elif [[ -n ${__o[title]:-} ]]; then
-    crit="title" srch="${__o[title]}"
+  elif [[ -n ${srch:=${__o[instance]}} ]]; then
+    crit="instance"
+  elif [[ -n ${srch:=${__o[class]}} ]]; then
+    crit="class"
+  elif [[ -n ${srch:=${__o[conid]}} ]]; then
+    crit="id"
+  elif [[ -n ${srch:=${__o[winid]}} ]]; then
+    crit="window"
+  elif [[ -n ${srch:=${__o[mark]}} ]]; then
+    crit="marks"
+  elif [[ -n ${srch:=${__o[title]}} ]]; then
+    crit="title"
   else
     crit=X srch=X
   fi
@@ -452,10 +452,9 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
         acon[curcon]=curcid
       }
 
-      else if (var ~ /^i34X.*/ && fourspace != 1) {
+      else if (var ~ /^i34X.*/ && aws[curwsid]["num"] != -1 && fourspace != 1) {
         # if mainsplit container exist, get i3fyra
         # workspace on next occurrence of "num".
-
         setworkspace(curwsid,"F")
         fourspace=1
       }
