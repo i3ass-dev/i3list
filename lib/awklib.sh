@@ -369,13 +369,11 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
       else if (match(var,/^i34X(.+)/,splitmark)) {
         # if mainsplit (splits[3]) container exist
         # curcid is id of fyra workspace (WFI)
-          print "jakobe" splitmark[1] > "/dev/stderr"
         if (splitmark[1] == splits[3]) {
           WFI=curcid
-        } else {
-          layout["X" splitmark[1]]=curws
-        }
+        } 
         
+        layout["X" splitmark[1]]=curws  
       }
 
       else if (var ~ /i34M(AB|CD|AC|BD)/) {
