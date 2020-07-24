@@ -89,4 +89,10 @@ function descriptions() {
   desc["WFY"]="i3fyra Workspace Y position"
   desc["WFN"]="i3fyra Workspace name"
 
+  desc["XAB"]="family AB workspace"
+  desc["XAC"]="family AC workspace"
+  desc["XCD"]="family CD workspace"
+  desc["XBD"]="family BD workspace"
+
+
 }

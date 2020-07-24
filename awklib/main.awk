@@ -79,11 +79,17 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
         acon[curcon]=curcid
       }
 
-      else if (var ~ /^i34X.*/ && aws[curwsid]["num"] != -1 && fourspace != 1) {
-        # if mainsplit container exist, get i3fyra
-        # workspace on next occurrence of "num".
-        setworkspace(curwsid,"F")
-        fourspace=1
+
+      else if (match(var,/^i34X(.+)/,splitmark)) {
+        # if mainsplit (splits[3]) container exist
+        # curcid is id of fyra workspace (WFI)
+          print "jakobe" splitmark[1] > "/dev/stderr"
+        if (splitmark[1] == splits[3]) {
+          WFI=curcid
+        } else {
+          layout["X" splitmark[1]]=curws
+        }
+        
       }
 
       else if (var ~ /i34M(AB|CD|AC|BD)/) {

@@ -1,8 +1,8 @@
 ---
 description: >
   list information about the current i3 session.
-updated:       2020-07-23
-version:       0.184
+updated:       2020-07-24
+version:       0.194
 author:        budRich
 repo:          https://github.com/budlabs/i3ass
 created:       2017-10-06

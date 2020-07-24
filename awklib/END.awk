@@ -2,6 +2,9 @@ END {
 
   # mirror active to target if no criteria is given
 
+  if (WFI)
+    setworkspace(WFI,"F")
+
   if (crit == "X") {
     for (k in window["A"]) {
       tk=k;sub("A","T",tk)
