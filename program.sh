@@ -3,7 +3,7 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3list - version: 0.195
+i3list - version: 0.196
 updated: 2020-07-24 by budRich
 EOB
 }
@@ -248,8 +248,10 @@ END {
 
   # mirror active to target if no criteria is given
 
-  if (WFI)
+  if (WFI) {
     setworkspace(WFI,"F")
+    layout["X" splits[3]]=workspace["WSF"]
+  }
 
   if (crit == "X") {
     for (k in window["A"]) {

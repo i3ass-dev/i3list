@@ -2,8 +2,10 @@ END {
 
   # mirror active to target if no criteria is given
 
-  if (WFI)
+  if (WFI) {
     setworkspace(WFI,"F")
+    layout["X" splits[3]]=workspace["WSF"]
+  }
 
   if (crit == "X") {
     for (k in window["A"]) {
