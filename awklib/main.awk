@@ -90,14 +90,8 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
         layout["X" splitmark[1]]=curws  
       }
 
-      else if (var ~ /i34M(AB|CD|AC|BD)/) {
-        split(var,mrksplt,"=")
-        outsplit[substr(var,4,3)]=mrksplt[2]
-      }
-
-      else if (var ~ /i34F(AB|CD|AC|BD)/) {
-        split(var,mrksplt,"=")
-        family[substr(var,4,3)]=mrksplt[2]
+      else if (match(var,/^i34([FM].{2})=(.*)/,splitmark)) {
+        memory[splitmark[1]]=splitmark[2]
       }
 
     break

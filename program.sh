@@ -3,8 +3,8 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3list - version: 0.196
-updated: 2020-07-24 by budRich
+i3list - version: 0.202
+updated: 2020-07-26 by budRich
 EOB
 }
 
@@ -306,11 +306,10 @@ END {
     }
 
     if (ENVIRON["I3FYRA_ORIENTATION"]=="vertical") {
-    splits[1]="AB"
-    splits[2]="CD"
-    splits[3]="AC"
-  }
-
+      splits[1]="AB"
+      splits[2]="CD"
+      splits[3]="AC"
+    }
 
     layout["LEX"]=layout["LVI"] layout["LHI"]
 
@@ -372,6 +371,11 @@ END {
         printf(stringformat, k, family[k], desc[k])
       }
     }
+  
+  }
+
+  for(k in memory){
+    printf(stringformat, k, memory[k], desc[k])
   }
 
   layout["LAL"]=splits[1] splits[2]
@@ -474,14 +478,8 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
         layout["X" splitmark[1]]=curws  
       }
 
-      else if (var ~ /i34M(AB|CD|AC|BD)/) {
-        split(var,mrksplt,"=")
-        outsplit[substr(var,4,3)]=mrksplt[2]
-      }
-
-      else if (var ~ /i34F(AB|CD|AC|BD)/) {
-        split(var,mrksplt,"=")
-        family[substr(var,4,3)]=mrksplt[2]
+      else if (match(var,/^i34([FM].{2})=(.*)/,splitmark)) {
+        memory[splitmark[1]]=splitmark[2]
       }
 
     break

@@ -60,11 +60,10 @@ END {
     }
 
     if (ENVIRON["I3FYRA_ORIENTATION"]=="vertical") {
-    splits[1]="AB"
-    splits[2]="CD"
-    splits[3]="AC"
-  }
-
+      splits[1]="AB"
+      splits[2]="CD"
+      splits[3]="AC"
+    }
 
     layout["LEX"]=layout["LVI"] layout["LHI"]
 
@@ -126,6 +125,11 @@ END {
         printf(stringformat, k, family[k], desc[k])
       }
     }
+  
+  }
+
+  for(k in memory){
+    printf(stringformat, k, memory[k], desc[k])
   }
 
   layout["LAL"]=splits[1] splits[2]
