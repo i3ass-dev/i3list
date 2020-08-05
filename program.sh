@@ -3,8 +3,8 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3list - version: 0.202
-updated: 2020-07-26 by budRich
+i3list - version: 0.205
+updated: 2020-08-02 by budRich
 EOB
 }
 
@@ -241,6 +241,11 @@ function descriptions() {
   desc["XAC"]="family AC workspace"
   desc["XCD"]="family CD workspace"
   desc["XBD"]="family BD workspace"
+
+  desc["VPA"]="vertical position A"
+  desc["VPB"]="vertical position B"
+  desc["VPC"]="vertical position C"
+  desc["VPD"]="vertical position D"
 
 
 }
@@ -479,6 +484,10 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
       }
 
       else if (match(var,/^i34([FM].{2})=(.*)/,splitmark)) {
+        memory[splitmark[1]]=splitmark[2]
+      }
+
+      else if (match(var,/^i34(VP[ABCD])=([ABCD])/,splitmark)) {
         memory[splitmark[1]]=splitmark[2]
       }
 

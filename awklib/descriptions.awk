@@ -94,5 +94,10 @@ function descriptions() {
   desc["XCD"]="family CD workspace"
   desc["XBD"]="family BD workspace"
 
+  desc["VPA"]="vertical position A"
+  desc["VPB"]="vertical position B"
+  desc["VPC"]="vertical position C"
+  desc["VPD"]="vertical position D"
+
 
 }

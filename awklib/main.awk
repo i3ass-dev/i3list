@@ -94,6 +94,10 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
         memory[splitmark[1]]=splitmark[2]
       }
 
+      else if (match(var,/^i34(VP[ABCD])=([ABCD])/,splitmark)) {
+        memory[splitmark[1]]=splitmark[2]
+      }
+
     break
 
     case "layout":
