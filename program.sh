@@ -3,8 +3,8 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3list - version: 0.205
-updated: 2020-08-02 by budRich
+i3list - version: 0.21
+updated: 2020-08-10 by budRich
 EOB
 }
 
@@ -45,20 +45,22 @@ i3list - list information about the current i3 session.
 
 SYNOPSIS
 --------
-i3list [--json FILE]
-i3list --instance|-i TARGET [--json FILE]
-i3list --class|-c    TARGET [--json FILE]
-i3list --conid|-n    TARGET [--json FILE]
-i3list --winid|-d    TARGET [--json FILE]
-i3list --mark|-m     TARGET [--json FILE]
-i3list --title|-t    TARGET [--json FILE]
+i3list [--json JSON]
+i3list --instance|-i TARGET [--json JSON]
+i3list --class|-c    TARGET [--json JSON]
+i3list --conid|-n    TARGET [--json JSON]
+i3list --winid|-d    TARGET [--json JSON]
+i3list --mark|-m     TARGET [--json JSON]
+i3list --title|-t    TARGET [--json JSON]
 i3list --help|-h
 i3list --version|-v
 
 OPTIONS
 -------
 
---json FILE  
+--json JSON  
+use JSON instead of output from  i3-msg -t
+get_tree
 
 --instance|-i TARGET  
 Search for windows with a instance matching
@@ -84,6 +86,7 @@ Search for windows with a mark matching TARGET
 
 --title|-t TARGET  
 Search for windows with a title matching TARGET  
+
 
 --help|-h  
 Show help and exit.
@@ -242,10 +245,10 @@ function descriptions() {
   desc["XCD"]="family CD workspace"
   desc["XBD"]="family BD workspace"
 
-  desc["VPA"]="vertical position A"
-  desc["VPB"]="vertical position B"
-  desc["VPC"]="vertical position C"
-  desc["VPD"]="vertical position D"
+  desc["VPA"]="virtual position A"
+  desc["VPB"]="virtual position B"
+  desc["VPC"]="virtual position C"
+  desc["VPD"]="virtual position D"
 
 
 }
@@ -487,7 +490,7 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
         memory[splitmark[1]]=splitmark[2]
       }
 
-      else if (match(var,/^i34(VP[ABCD])=([ABCD])/,splitmark)) {
+      else if (match(var,/^i34(VP[ABCD])=(.*)/,splitmark)) {
         memory[splitmark[1]]=splitmark[2]
       }
 
@@ -567,15 +570,12 @@ ERM() { echo  "$*" >&2 ;}
 
 printlist(){
 
-  awk -f <(awklib) \
-    FS=: RS=, crit="$1" srch="$2" toprint="$3" \
-    <(
-      if [[ -f ${__o[json]} ]]; then
-        cat "${__o[json]}"
-      else
-        i3-msg -t get_tree
-      fi
-    )
+  [[ -n ${_json:=${__o[json]}} ]] \
+    || _json=$(i3-msg -t get_tree)
+
+  awk -f <(awklib)                                  \
+         FS=: RS=, crit="$1" srch="$2" toprint="$3" \
+         <(echo "$_json")
 }
 
 

@@ -146,10 +146,10 @@ function descriptions() {
   desc["XCD"]="family CD workspace"
   desc["XBD"]="family BD workspace"
 
-  desc["VPA"]="vertical position A"
-  desc["VPB"]="vertical position B"
-  desc["VPC"]="vertical position C"
-  desc["VPD"]="vertical position D"
+  desc["VPA"]="virtual position A"
+  desc["VPB"]="virtual position B"
+  desc["VPC"]="virtual position C"
+  desc["VPD"]="virtual position D"
 
 
 }
@@ -391,7 +391,7 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
         memory[splitmark[1]]=splitmark[2]
       }
 
-      else if (match(var,/^i34(VP[ABCD])=([ABCD])/,splitmark)) {
+      else if (match(var,/^i34(VP[ABCD])=(.*)/,splitmark)) {
         memory[splitmark[1]]=splitmark[2]
       }
 

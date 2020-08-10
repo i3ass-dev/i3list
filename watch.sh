@@ -9,7 +9,7 @@ while read -r ; do
   shellcheck "$_dir/program.sh" && {
     time(
       while ((++i<50));do 
-        "$_dir/program.sh" -i typiskt --json "$_dir/t/tree.json"
+        "$_dir/program.sh" -i typiskt --json "$(< $_dir/tests/tree.json)"
       done >/dev/null
     )
   }

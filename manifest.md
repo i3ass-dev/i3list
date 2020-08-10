@@ -1,21 +1,21 @@
 ---
 description: >
   list information about the current i3 session.
-updated:       2020-08-02
-version:       0.205
+updated:       2020-08-10
+version:       0.21
 author:        budRich
 repo:          https://github.com/budlabs/i3ass
 created:       2017-10-06
 dependencies:  [bash, gawk, i3]
 see-also:      [bash(1), awk(1), i3(1), i3fyra(1)]
 synopsis: |
-    [--json FILE]
-    --instance|-i TARGET [--json FILE]
-    --class|-c    TARGET [--json FILE]
-    --conid|-n    TARGET [--json FILE]
-    --winid|-d    TARGET [--json FILE]
-    --mark|-m     TARGET [--json FILE]
-    --title|-t    TARGET [--json FILE]
+    [--json JSON]
+    --instance|-i TARGET [--json JSON]
+    --class|-c    TARGET [--json JSON]
+    --conid|-n    TARGET [--json JSON]
+    --winid|-d    TARGET [--json JSON]
+    --mark|-m     TARGET [--json JSON]
+    --title|-t    TARGET [--json JSON]
     --help|-h
     --version|-v
 ...

@@ -21,3 +21,6 @@ Search for windows with a **mark** matching *TARGET*
 
 # options-title-description
 Search for windows with a **title** matching *TARGET*  
+
+# options-json-description
+use JSON instead of output from  `i3-msg -t get_tree` 

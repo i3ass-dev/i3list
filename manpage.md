@@ -3,13 +3,13 @@
 SYNOPSIS
 --------
 ```text
-i3list [--json FILE]
-i3list --instance|-i TARGET [--json FILE]
-i3list --class|-c    TARGET [--json FILE]
-i3list --conid|-n    TARGET [--json FILE]
-i3list --winid|-d    TARGET [--json FILE]
-i3list --mark|-m     TARGET [--json FILE]
-i3list --title|-t    TARGET [--json FILE]
+i3list [--json JSON]
+i3list --instance|-i TARGET [--json JSON]
+i3list --class|-c    TARGET [--json JSON]
+i3list --conid|-n    TARGET [--json JSON]
+i3list --winid|-d    TARGET [--json JSON]
+i3list --mark|-m     TARGET [--json JSON]
+i3list --title|-t    TARGET [--json JSON]
 i3list --help|-h
 i3list --version|-v
 ```
@@ -30,7 +30,9 @@ By using eval,  the output can be used as an array in bash scripts,  but the arr
 OPTIONS
 -------
 
-`--json` FILE  
+`--json` JSON  
+use JSON instead of output from  `i3-msg -t
+get_tree`
 
 `--instance`|`-i` TARGET  
 Search for windows with a instance matching

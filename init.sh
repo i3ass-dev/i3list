@@ -3,8 +3,8 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3list - version: 0.205
-updated: 2020-08-02 by budRich
+i3list - version: 0.21
+updated: 2020-08-10 by budRich
 EOB
 }
 
@@ -19,20 +19,22 @@ i3list - list information about the current i3 session.
 
 SYNOPSIS
 --------
-i3list [--json FILE]
-i3list --instance|-i TARGET [--json FILE]
-i3list --class|-c    TARGET [--json FILE]
-i3list --conid|-n    TARGET [--json FILE]
-i3list --winid|-d    TARGET [--json FILE]
-i3list --mark|-m     TARGET [--json FILE]
-i3list --title|-t    TARGET [--json FILE]
+i3list [--json JSON]
+i3list --instance|-i TARGET [--json JSON]
+i3list --class|-c    TARGET [--json JSON]
+i3list --conid|-n    TARGET [--json JSON]
+i3list --winid|-d    TARGET [--json JSON]
+i3list --mark|-m     TARGET [--json JSON]
+i3list --title|-t    TARGET [--json JSON]
 i3list --help|-h
 i3list --version|-v
 
 OPTIONS
 -------
 
---json FILE  
+--json JSON  
+use JSON instead of output from  i3-msg -t
+get_tree
 
 --instance|-i TARGET  
 Search for windows with a instance matching
@@ -58,6 +60,7 @@ Search for windows with a mark matching TARGET
 
 --title|-t TARGET  
 Search for windows with a title matching TARGET  
+
 
 --help|-h  
 Show help and exit.

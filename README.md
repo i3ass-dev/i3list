@@ -3,13 +3,13 @@
 ### usage
 
 ```text
-i3list [--json FILE]
-i3list --instance|-i TARGET [--json FILE]
-i3list --class|-c    TARGET [--json FILE]
-i3list --conid|-n    TARGET [--json FILE]
-i3list --winid|-d    TARGET [--json FILE]
-i3list --mark|-m     TARGET [--json FILE]
-i3list --title|-t    TARGET [--json FILE]
+i3list [--json JSON]
+i3list --instance|-i TARGET [--json JSON]
+i3list --class|-c    TARGET [--json JSON]
+i3list --conid|-n    TARGET [--json JSON]
+i3list --winid|-d    TARGET [--json JSON]
+i3list --mark|-m     TARGET [--json JSON]
+i3list --title|-t    TARGET [--json JSON]
 i3list --help|-h
 i3list --version|-v
 ```
@@ -27,7 +27,8 @@ By using eval,  the output can be used as an array in bash scripts,  but the arr
 OPTIONS
 -------
 
-`--json` FILE  
+`--json` JSON  
+use JSON instead of output from  `i3-msg -t get_tree`
 
 `--instance`|`-i` TARGET  
 Search for windows with a instance matching *TARGET*
@@ -137,6 +138,28 @@ $ eval "$(i3list)"
 $ echo ${i3list[WAW]}
 1080
 ```
+## updates
+
+### 2020.08.10
+
+No big changes to the script. Added `--json` options and
+watch script to help testing and development. As well as a
+few new keys to the output array:  
+
+``` shell
+i3list["XAB"] # family AB workspace
+i3list["XAC"] # family AC workspace
+i3list["XCD"] # family CD workspace
+i3list["XBD"] # family BD workspace
+
+i3list["VPA"] # virtual position A
+i3list["VPB"] # virtual position B
+i3list["VPC"] # virtual position C
+i3list["VPD"] # virtual position D
+```
+
+
+
 
 
 

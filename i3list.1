@@ -1,5 +1,5 @@
 .nh
-.TH I3LIST 1 2020\-08\-02 Linux "User Manuals"
+.TH I3LIST 1 2020\-08\-10 Linux "User Manuals"
 .SH NAME
 .PP
 \fB\fCi3list\fR \- list information about the current i3
@@ -10,13 +10,13 @@ session.
 .RS
 
 .nf
-i3list [\-\-json FILE]
-i3list \-\-instance|\-i TARGET [\-\-json FILE]
-i3list \-\-class|\-c    TARGET [\-\-json FILE]
-i3list \-\-conid|\-n    TARGET [\-\-json FILE]
-i3list \-\-winid|\-d    TARGET [\-\-json FILE]
-i3list \-\-mark|\-m     TARGET [\-\-json FILE]
-i3list \-\-title|\-t    TARGET [\-\-json FILE]
+i3list [\-\-json JSON]
+i3list \-\-instance|\-i TARGET [\-\-json JSON]
+i3list \-\-class|\-c    TARGET [\-\-json JSON]
+i3list \-\-conid|\-n    TARGET [\-\-json JSON]
+i3list \-\-winid|\-d    TARGET [\-\-json JSON]
+i3list \-\-mark|\-m     TARGET [\-\-json JSON]
+i3list \-\-title|\-t    TARGET [\-\-json JSON]
 i3list \-\-help|\-h
 i3list \-\-version|\-v
 
@@ -40,7 +40,10 @@ declared first.
 
 .SH OPTIONS
 .PP
-\fB\fC\-\-json\fR FILE
+\fB\fC\-\-json\fR JSON
+.br
+use JSON instead of output from  \fB\fCi3\-msg \-t
+get\_tree\fR
 
 .PP
 \fB\fC\-\-instance\fR|\fB\fC\-i\fR TARGET
