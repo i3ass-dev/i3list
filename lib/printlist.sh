@@ -7,5 +7,5 @@ printlist(){
 
   awk -f <(awklib)                                  \
          FS=: RS=, crit="$1" srch="$2" toprint="$3" \
-         <(echo "$_json")
+         <<< "$_json"
 }
