@@ -9,7 +9,6 @@ $(NF-1) ~ /"(focus|id|window|name|num|width|height|x|y|floating|marks|layout|foc
   key=gensub(/.*"([^"]+)"$/,"\\1","g",$(NF-1))
   var=gensub(/[["]*([^]}"]+)[]}"]*$/,"\\1","g",$NF)
 
-  
   if (key == crit && !trg && var ~ srch) {
     if (key=="id") {curcid=var}
     window["T"]["TWC"]=curcid
