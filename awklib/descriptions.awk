@@ -1,21 +1,18 @@
 function descriptions() {
   
-  desc["CAS"]="Container A Status"
   desc["CAL"]="Container A Layout"
   desc["CAF"]="Container A Focused container id"
-  desc["CBS"]="Container B Status"
+  desc["CAW"]="Container A Workspace"
   desc["CBL"]="Container B Layout"
   desc["CBF"]="Container B Focused container id"
-  desc["CCS"]="Container C Status"
-  desc["CCL"]="Container C Layout"
-  desc["CCW"]="Container C Workspace"
-  desc["CAW"]="Container A Workspace"
   desc["CBW"]="Container B Workspace"
-  desc["CDW"]="Container D Workspace"
+  desc["CCL"]="Container C Layout"
   desc["CCF"]="Container C Focused container id"
-  desc["CDS"]="Container D Status"
+  desc["CCW"]="Container C Workspace"
   desc["CDL"]="Container D Layout"
   desc["CDF"]="Container D Focused container id"
+  desc["CDW"]="Container D Workspace"
+
   desc["SAB"]="Current split: AB"
   desc["SAC"]="Current split: AC"
   desc["SBD"]="Current split: BD"
@@ -27,6 +24,8 @@ function descriptions() {
   desc["FAC"]="Family AC memory"
   desc["FBD"]="Family BD memory"
   desc["FCD"]="Family CD memory"
+  desc["FAB"]="Family AB memory"
+
   desc["LVI"]="Visible i3fyra containers"
   desc["LHI"]="Hidden i3fyra containers"
   desc["LAL"]="All containers in family order"
@@ -65,7 +64,6 @@ function descriptions() {
   desc["TWX"]="Target Window x position"
   desc["TWY"]="Target Window y position"
   desc["TWB"]="Target Window titlebar height"
-
   
   desc["WAW"]="Active Workspace width"
   desc["WAH"]="Active Workspace height"
@@ -98,6 +96,4 @@ function descriptions() {
   desc["VPB"]="virtual position B"
   desc["VPC"]="virtual position C"
   desc["VPD"]="virtual position D"
-
-
 }

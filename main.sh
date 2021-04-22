@@ -2,30 +2,46 @@
 
 main(){
 
-  local crit srch
+  [[ -n ${_json:=${__o[json]}} ]] \
+    || _json=$(i3-msg -t get_tree)
 
-  if [[ -z ${__o[*]} ]]; then
-    crit=X srch=X
-  elif [[ -n ${srch:=${__o[instance]}} ]]; then
-    crit="instance"
-  elif [[ -n ${srch:=${__o[class]}} ]]; then
-    crit="class"
-  elif [[ -n ${srch:=${__o[conid]}} ]]; then
-    crit="id"
-  elif [[ -n ${srch:=${__o[winid]}} ]]; then
-    crit="window"
-  elif [[ -n ${srch:=${__o[mark]}} ]]; then
-    crit="marks"
-  elif [[ -n ${srch:=${__o[title]}} ]]; then
-    crit="title"
-  else
-    crit=X srch=X
-  fi
+  awk -f <(
+    echo "
+    BEGIN {
+      ${__o[instance]:+
+        arg_target=\"instance\"
+        arg_search[arg_target]=\"${__o[instance]}\"
+      }
+      ${__o[class]:+
+        arg_target=\"class\"
+        arg_search[arg_target]=\"${__o[class]}\"
+      }
+      ${__o[conid]:+
+        arg_target=\"id\"
+        arg_search[arg_target]=${__o[conid]}
+      }
+      ${__o[winid]:+
+        arg_target=\"window\"
+        arg_search[arg_target]=${__o[winid]}
+      }
+      ${__o[mark]:+
+        arg_target=\"marks\"
+        arg_search[arg_target]=\"${__o[mark]}\"
+      }
+      ${__o[title]:+
+        arg_target=\"name\"
+        arg_search[arg_target]=\"${__o[title]}\"
+      }
+    }"
+    awklib
+  ) FS=: RS=, <<< "$_json"
 
-  toprint="${1:-all}"
-  printlist "$crit" "$srch" "$toprint"
   
 }
+
+
+
+
 
 ___source="$(readlink -f "${BASH_SOURCE[0]}")"  #bashbud
 ___dir="${___source%/*}"                        #bashbud

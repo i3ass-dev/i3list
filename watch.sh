@@ -8,7 +8,7 @@ while read -r ; do
   bashbud --bump "$_dir"
   shellcheck "$_dir/program.sh" && {
     time(
-      while ((++i<50));do 
+      while ((++i<100));do 
         "$_dir/program.sh" -i typiskt --json "$(< $_dir/tests/tree.json)"
       done >/dev/null
     )

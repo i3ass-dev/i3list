@@ -2,6 +2,7 @@
 lib/awklib.sh
 lib/createconf.sh
 program.sh
+last.sh
 init.sh
 manpage.md
 README.md
