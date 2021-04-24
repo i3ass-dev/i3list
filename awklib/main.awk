@@ -1,32 +1,20 @@
-$(NF-1) ~ /"(type|output|id|window|name|num|x|floating|marks|layout|focused|instance|class|focus|title_format)"$/ {
+$(NF-1) ~ /"(type|id|window|name|num|x|floating|marks|layout|focused|instance|class|focus)"$/ {
   
   key=gensub(/.*"([^"]+)"$/,"\\1","g",$(NF-1))
     
   switch (key) {
 
     case "layout":
-    case "title_format":
-    case "output":
     case "type":
       ac[cid][key]=$NF
     break
 
     case "class":
     case "instance":
-      ac[cid][key]=$NF
-      if ( key == arg_target && match($NF, arg_search[key]) )
-        suspect_targets[cid]=1
-    break
-
     case "name":
       ac[cid][key]=$NF
       if ( key == arg_target && match($NF, arg_search[key]) )
         suspect_targets[cid]=1
-
-      # store output container id in separate array
-      if ( ac[cid]["type"] ~ /"output"/ && $NF !~ /__i3/)
-        outputs[$NF]=cid
-
     break
 
     case "id":
@@ -37,10 +25,15 @@ $(NF-1) ~ /"(type|output|id|window|name|num|x|floating|marks|layout|focused|inst
       # save the last container_id as current_parent_id
       if ($1 ~ /nodes"$/) {
         current_parent_id=cid
+      } else if (NR == 1) {
+        root_id=$NF
       }
+
 
       # cid, "current id" is the last seen container_id
       cid=$NF
+      ac[cid][key]=$NF
+
       if ( key == arg_target && match($NF, arg_search[key]) )
         suspect_targets[cid]=1
     break
@@ -48,7 +41,9 @@ $(NF-1) ~ /"(type|output|id|window|name|num|x|floating|marks|layout|focused|inst
     case "x":
 
       if ($1 ~ /"(deco_)?rect"/) {
-        # this will add values to ac[cid]["x"], ac[cid]["y"] ...
+        # this will add values to:
+        #   ac[cid]["x"] , ["y"] , ["w"] , ["h"]
+        #   ac[cid]["deco_x"] , ["deco_y"] , ["deco_w"] , ["deco_h"]
         keyprefix=($1 ~ /"deco_rect"/ ? "deco_" : "")
         while (1) {
 
@@ -66,24 +61,21 @@ $(NF-1) ~ /"(type|output|id|window|name|num|x|floating|marks|layout|focused|inst
 
     case "num":
       ac[cid][key]=$NF
-      cwsid=cid                        # current workspace id
-      copid=outputs[ac[cid]["output"]] # current output id
+      cwsid=cid # current workspace id
     break
 
     case "focused":
       if ($NF == "true") {
         active_container_id=cid
         active_workspace_id=cwsid
-        active_output_id=copid
-        getorder=1
       }
+      ac[cid]["workspace"]=cwsid
       ac[cid]["parent"]=current_parent_id
     break
 
     case "window":
       if ($NF != "null") {
         ac[cid]["window"]=$NF
-        ac[cid]["workspace"]=cwsid
         if ( key == arg_target && match($NF, arg_search[key]) )
           suspect_targets[cid]=1
       }
@@ -107,28 +99,8 @@ $(NF-1) ~ /"(type|output|id|window|name|num|x|floating|marks|layout|focused|inst
 
         # this restores current_parent_id  and cid 
         # to what it was before this branch.
-        cid=current_parent_id
+        cid=parent_id
         current_parent_id=ac[parent_id]["parent"]
-        
-        # workspaces are childs in a special containers
-        # named "content", so the focused (first_id) container
-        # is a visible workspace (excluding the scratchpad)
-        if (ac[parent_id]["name"] ~ /"content"/) {
-          visible_workspaces[first_id]=1
-
-          # store the workspace id for current output
-          ac[copid]["workspace"]=first_id
-        }
-
-        # this just store a list of child container IDs
-        # (same as the focus list).
-        while (1) {
-          child=gensub(/[][]/,"","g",$NF)
-          ac[parent_id]["children"][child]=1
-          if ($NF ~ /[]]$/)
-            break
-          getline
-        }
       }
     break
 
@@ -144,7 +116,6 @@ $(NF-1) ~ /"(type|output|id|window|name|num|x|floating|marks|layout|focused|inst
         fyra_containers[ma[1]]["id"]=cid
         fyra_containers[ma[1]]["workspace"]=cwsid
         ac[cid]["i3fyra_mark"]=ma[1]
-        # current_i3fyra_container=ma[1]
 
         if (ac[cwsid]["num"] != -1) {
           fyra_containers[ma[1]]["visible"]=1

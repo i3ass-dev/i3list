@@ -18,11 +18,11 @@ main(){
       }
       ${__o[conid]:+
         arg_target=\"id\"
-        arg_search[arg_target]=${__o[conid]}
+        arg_search[arg_target]=\"${__o[conid]}\"
       }
       ${__o[winid]:+
         arg_target=\"window\"
-        arg_search[arg_target]=${__o[winid]}
+        arg_search[arg_target]=\"${__o[winid]}\"
       }
       ${__o[mark]:+
         arg_target=\"marks\"

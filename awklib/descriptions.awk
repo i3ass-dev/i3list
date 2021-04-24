@@ -96,4 +96,6 @@ function descriptions() {
   desc["VPB"]="virtual position B"
   desc["VPC"]="virtual position C"
   desc["VPD"]="virtual position D"
+
+  desc["RID"]="root container id"
 }

@@ -1,4 +1,8 @@
 END {
+  descriptions()
+
+  # strfrm is the format string used for the output
+  strfrm="i3list[%s]=%-17s# %s\n"
 
   # determine target container ID
   if ( !arg_target ) {
@@ -9,8 +13,8 @@ END {
 
       search_match=0
 
-      for (search in arg_search) {
-        if (ac[suspect_id][search] ~ arg_search[search])
+      for (search in arg_search) { 
+        if (match(ac[suspect_id][search],arg_search[search]))
           search_match+=1
       }
 
@@ -21,19 +25,19 @@ END {
     }
   }
 
-  # initiate i3fyra values
 
-  if (main_split ~ /AB|AC/) {
-
+  # initialize i3fyra values
+  if (i3fyra_workspace_id) {
     if (main_split == "AB") {
-      fyra_vars["LAL"]="ACBD"
+
       orientation="horizontal"
+      fyra_vars["LAL"]="ACBD"
 
       # SAB - main split size
-      if (fyra_containers["A"]["visible"]) {
+      if ("A" in fyra_containers && fyra_containers["A"]["visible"]) {
         fyra_vars["SAB"]=ac[fyra_containers["A"]["id"]]["w"]
       }
-      else if (fyra_containers["C"]["visible"])
+      else if ("C" in fyra_containers && fyra_containers["C"]["visible"])
         fyra_vars["SAB"]=ac[fyra_containers["C"]["id"]]["w"]
       else
         fyra_vars["SAB"]=0
@@ -43,13 +47,14 @@ END {
     }
 
     else if (main_split == "AC") {
-      orientation="horizontal"
+      
+      orientation="vertical"
       fyra_vars["LAL"]="ABCD"
 
       # SAC - main split size
-      if (fyra_containers["A"]["visible"])
+      if ("A" in fyra_containers && fyra_containers["A"]["visible"])
         fyra_vars["SAC"]=ac[fyra_containers["A"]["id"]]["h"]
-      else if (fyra_containers["B"]["visible"])
+      else if ("B" in fyra_containers && fyra_containers["B"]["visible"])
         fyra_vars["SAC"]=ac[fyra_containers["B"]["id"]]["h"]
       else
         fyra_vars["SAC"]=0
@@ -59,56 +64,44 @@ END {
     }
   }
 
-  descriptions()
-  strfrm="i3list[%s]=%-17s# %s\n"
+  at["A"]=active_container_id
+  at["T"]=target_container_id
 
-  ### -- ACTIVE CONTAINER STUFF
-
-  print_window("A",active_container_id)
-  print ""
-
-  if (main_split ~ /AB|AC/) {
-    parent_id=ac[active_container_id]["parent"]
-    awp=ac[parent_id]["i3fyra_mark"]
-
-    if (awp) {
-      print_fyra_window("A",active_container_id,awp)
+  for (target in at) {
+    id=at[target]
+    if (id) {
+      print_window(target,id)
       print ""
-    }
 
-  }
+      if (i3fyra_workspace_id) {
 
-  print_workspace("A",active_workspace_id)
-  print ""
+        parent_id=ac[id]["parent"]
+        awp=ac[parent_id]["i3fyra_mark"]
+        grand_parent_id=ac[parent_id]["parent"]
+        gwp=ac[grand_parent_id]["i3fyra_mark"]
 
-  if (target_container_id) {
-    target_workspace_id=ac[target_container_id]["workspace"]
-    print_window("T",target_container_id)
-    print ""
+        if (awp) {
+          print_fyra_window(target,id,awp)
+          print ""
+        } else if (gwp) {
+          print_fyra_window(target,id,gwp)
+          print ""
+        }
 
-    if (main_split ~ /AB|AC/) {
-      parent_id=ac[target_container_id]["parent"]
-      twp=ac[parent_id]["i3fyra_mark"]
-
-      if (twp) {
-        print_fyra_window("T",target_container_id,twp)
-        print ""
       }
 
+      print_workspace(target,ac[id]["workspace"])
+      print ""
     }
-
-    print_workspace("T",target_workspace_id)
-    print ""
   }
-  
+
   ### -- I3FYRA STUFF
-  if (main_split ~ /AB|AC/) {
+  if (i3fyra_workspace_id) {
     print_workspace("F",i3fyra_workspace_id)
     print ""
 
     for (container_name in fyra_containers) {
       container_id=fyra_containers[container_name]["id"]
-      output_id=outputs[ac[container_id]["output"]]
       workspace_id=fyra_containers[container_name]["workspace"]
 
       key="C" container_name "L"; printf(strfrm,key, ac[container_id]["layout"], desc[key])
@@ -116,8 +109,8 @@ END {
 
       focused=ac[container_id]["focused"]
       # make sure the focused container is a window
-      while (!("window" in ac[focused]))
-        focused=ac[focused]["focused"]
+      # while (!("window" in ac[focused]))
+      #   focused=ac[focused]["focused"]
 
       key="C" container_name "F"; printf(strfrm,key, focused, desc[key])
 
@@ -158,5 +151,7 @@ END {
     for (key in fyra_vars) {
       printf(strfrm, key, fyra_vars[key], desc[key])
     }
+    print ""
+    printf(strfrm, "RID", root_id, desc["RID"])
   }
 }
