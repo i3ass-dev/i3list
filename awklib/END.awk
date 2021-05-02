@@ -151,7 +151,9 @@ END {
     for (key in fyra_vars) {
       printf(strfrm, key, fyra_vars[key], desc[key])
     }
-    print ""
-    printf(strfrm, "RID", root_id, desc["RID"])
+    
   }
+
+  print ""
+  printf(strfrm, "RID", root_id, desc["RID"])
 }

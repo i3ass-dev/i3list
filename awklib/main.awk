@@ -140,8 +140,26 @@ $(NF-1) ~ /"(type|id|window|name|num|x|floating|marks|layout|focused|instance|cl
         }
       }
 
-      else if ( match($NF,/"i34([^"=]+)=([^"]*)"/,ma) ) {
-        fyra_vars[ma[1]]=ma[2]
+      # marks set by i3var all are at the root_id.
+      # all that are related to i3fyra has i34 prefix
+      
+      # "marks":["i34MAC=157"
+      # "i34MAB=1570"
+      # "i34MBD=252"
+      # "i34FAC=X"
+      # "i34FBD=X"
+      # "hidden93845635698816="]
+      else if (cid == root_id) {
+        while (1) {
+          match($0,/"(i34)?([^"=]+)=([^"]*)"([]])?$/,ma)
+
+          if (ma[1] == "i34")
+            fyra_vars[ma[2]]=ma[3]
+          if (ma[4] ~ "]")
+            break
+
+          getline
+        }
       }
 
     break
