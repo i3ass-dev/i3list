@@ -2,8 +2,7 @@
 
 main(){
 
-  [[ -n ${_json:=${__o[json]}} ]] \
-    || _json=$(i3-msg -t get_tree)
+  : "${_json:=${__o[json]:-$(i3-msg -t get_tree)}}"
 
   awk -f <(
     echo "
