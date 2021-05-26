@@ -28,39 +28,40 @@ END {
 
   # initialize i3fyra values
   if (i3fyra_workspace_id) {
-    if (main_split == "AB") {
-
-      orientation="horizontal"
+    orientation=("ORI" in fyra_vars ? fyra_vars["ORI"] : "horizontal")
+    if (orientation == "horizontal") {
+      main_split="AB"
+      
       fyra_vars["LAL"]="ACBD"
 
       # SAB - main split size
       if ("A" in fyra_containers && fyra_containers["A"]["visible"]) {
-        fyra_vars["SAB"]=ac[fyra_containers["A"]["id"]]["w"]
+        main_split_size=ac[fyra_containers["A"]["id"]]["w"]
       }
       else if ("C" in fyra_containers && fyra_containers["C"]["visible"])
-        fyra_vars["SAB"]=ac[fyra_containers["C"]["id"]]["w"]
+        main_split_size=ac[fyra_containers["C"]["id"]]["w"]
       else
-        fyra_vars["SAB"]=0
+        main_split_size=0
 
-      if (fyra_vars["SAB"] == ac[i3fyra_workspace_id]["w"])
-        fyra_vars["SAB"]=0
+      if (main_split_size == ac[i3fyra_workspace_id]["w"])
+        main_split_size=0
     }
 
-    else if (main_split == "AC") {
+    else if (orientation == "vertical") {
+      main_split="AC"
       
-      orientation="vertical"
       fyra_vars["LAL"]="ABCD"
 
       # SAC - main split size
       if ("A" in fyra_containers && fyra_containers["A"]["visible"])
-        fyra_vars["SAC"]=ac[fyra_containers["A"]["id"]]["h"]
+        main_split_size=ac[fyra_containers["A"]["id"]]["h"]
       else if ("B" in fyra_containers && fyra_containers["B"]["visible"])
-        fyra_vars["SAC"]=ac[fyra_containers["B"]["id"]]["h"]
+        main_split_size=ac[fyra_containers["B"]["id"]]["h"]
       else
-        fyra_vars["SAC"]=0
+        main_split_size=0
 
-      if (fyra_vars["SAC"] == ac[i3fyra_workspace_id]["h"])
-        fyra_vars["SAC"]=0
+      if (main_split_size == ac[i3fyra_workspace_id]["h"])
+        main_split_size=0
     }
   }
 
@@ -131,7 +132,10 @@ END {
       split(family,split_childs,"")
       first_id=fyra_containers[first]["id"]
 
-      if ( orientation == "horizontal"       && 
+      if (family == main_split)
+        family_split_size = main_split_size
+
+      else if ( orientation == "horizontal"       && 
            fyra_containers[first]["visible"] &&
            ac[first_id]["h"] != ac[i3fyra_workspace_id]["h"] )
         family_split_size=ac[first_id]["h"]
@@ -146,6 +150,7 @@ END {
 
       key="S" family; printf(strfrm, key, family_split_size, desc[key])
     }
+    # key="S" main_split; printf(strfrm, key, main_split_size, desc[key])
 
     print ""
     for (key in fyra_vars) {

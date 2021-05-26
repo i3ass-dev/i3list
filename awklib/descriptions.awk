@@ -98,4 +98,6 @@ function descriptions() {
   desc["VPD"]="virtual position D"
 
   desc["RID"]="root container id"
+
+  desc["ORI"]="i3fyra orientation"
 }

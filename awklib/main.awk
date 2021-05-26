@@ -11,10 +11,19 @@ $(NF-1) ~ /"(type|id|window|name|num|x|floating|marks|layout|focused|instance|cl
 
     case "class":
     case "instance":
+      ac[cid][key]=$NF
+      if ( key == arg_target && match($NF, arg_search[key]) )
+        suspect_targets[cid]=1
+    break
+
     case "name":
       ac[cid][key]=$NF
       if ( key == arg_target && match($NF, arg_search[key]) )
         suspect_targets[cid]=1
+
+      if (ac[cid]["type"] == "\"workspace\"" && $NF == "\"" i3fyra_workspace_name "\"") {
+        i3fyra_workspace_id = cid
+      }
     break
 
     case "id":
@@ -62,6 +71,9 @@ $(NF-1) ~ /"(type|id|window|name|num|x|floating|marks|layout|focused|instance|cl
     case "num":
       ac[cid][key]=$NF
       cwsid=cid # current workspace id
+
+      if (cid == i3fyra_workspace_id)
+        i3fyra_workspace_num=$NF
     break
 
     case "focused":
@@ -124,20 +136,9 @@ $(NF-1) ~ /"(type|id|window|name|num|x|floating|marks|layout|focused|instance|cl
       }
 
       else if ( match($NF,/"i34X([ABCD]{2})"/,ma) ) {
-        # the i3fyra workspace has a mark like this:
-        # i34XAB (horizontal) or i34XAC (vertical)
-        if (ac[cid]["type"] ~ /workspace/) {
-          # we have to get the workspace number later
-          # because it appears after "marks": in JSON
-          i3fyra_workspace_id=cid
-          main_split=ma[1]
-        }
-
-        else {
-          fyra_splits[ma[1]]=cid
-          current_fyra_family=ma[1]
-          fyra_vars["X" ma[1]]=ac[cwsid]["num"]
-        }
+        fyra_splits[ma[1]]=cid
+        current_fyra_family=ma[1]
+        fyra_vars["X" ma[1]]=ac[cwsid]["num"]
       }
 
       # marks set by i3var all are at the root_id.
@@ -153,7 +154,10 @@ $(NF-1) ~ /"(type|id|window|name|num|x|floating|marks|layout|focused|instance|cl
         while (1) {
           match($0,/"(i34)?([^"=]+)=([^"]*)"([]])?$/,ma)
 
-          if (ma[1] == "i34")
+          if (ma[2] == "i3fyra_ws") {
+            i3fyra_workspace_name=ma[3]
+          }
+          else if (ma[1] == "i34")
             fyra_vars[ma[2]]=ma[3]
           if (ma[4] ~ "]")
             break
